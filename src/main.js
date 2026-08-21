@@ -23,7 +23,6 @@ function setPlayingState(playing) {
     iconPause.classList.remove("hidden");
     musicLabel.textContent = "Jeda Musik";
     musicBars.classList.add("playing");
-    audio.play().catch(() => {});
   } else {
     iconPlay.classList.remove("hidden");
     iconPause.classList.add("hidden");
@@ -33,16 +32,48 @@ function setPlayingState(playing) {
   }
 }
 
+async function playMusic() {
+  try {
+    await audio.play();
+    setPlayingState(true);
+    return true;
+  } catch {
+    setPlayingState(false);
+    return false;
+  }
+}
+
 musicToggle.addEventListener("click", () => {
-  setPlayingState(!isPlaying);
+  if (isPlaying) {
+    setPlayingState(false);
+  } else {
+    playMusic();
+  }
 });
 let autoplayTriggered = false;
 function triggerAutoplay() {
   if (!autoplayTriggered) {
     autoplayTriggered = true;
-    setPlayingState(true);
+    playMusic();
   }
 }
+
+// Coba putar segera saat halaman dibuka atau di-refresh. Jika browser
+// memblokir autoplay bersuara, interaksi pertama pengunjung akan mencobanya lagi.
+triggerAutoplay();
+
+const resumeMusicOnFirstInteraction = async (event) => {
+  // Biarkan tombol musik menangani kliknya sendiri agar tidak langsung terjeda.
+  if (event.target instanceof Element && event.target.closest("#musicToggle")) return;
+  if (!isPlaying) await playMusic();
+  if (isPlaying) {
+    document.removeEventListener("pointerdown", resumeMusicOnFirstInteraction);
+    document.removeEventListener("keydown", resumeMusicOnFirstInteraction);
+  }
+};
+
+document.addEventListener("pointerdown", resumeMusicOnFirstInteraction);
+document.addEventListener("keydown", resumeMusicOnFirstInteraction);
 
 const invitationSection = document.getElementById("profile");
 document.querySelectorAll("[data-open-invitation]").forEach((button) => {
