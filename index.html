@@ -18,6 +18,34 @@
 
 <body class="invitation-locked">
 
+  <div class="guest-gate" id="guestGate" role="dialog" aria-modal="true" aria-labelledby="guestGateTitle">
+    <div class="guest-gate-backdrop"></div>
+    <div class="guest-gate-card">
+      <span class="guest-gate-kicker">Undangan Khitanan</span>
+      <h2 id="guestGateTitle">Selamat Datang</h2>
+      <p class="guest-gate-copy">Silakan masukkan nama untuk melanjutkan ke undangan.</p>
+      <form id="guestGateForm" class="guest-gate-form">
+        <label for="guestName">Nama Bapak/Ibu/Saudara/i</label>
+        <input id="guestName" type="text" autocomplete="name" placeholder="Contoh: Bapak Ahmad & Keluarga" required />
+        <p class="guest-gate-error" id="guestGateError" role="alert"></p>
+        <button type="submit" class="guest-gate-submit">Lanjut ke Undangan</button>
+        <span class="guest-gate-note">Nama akan ditampilkan sebagai penerima undangan</span>
+      </form>
+      <div class="guest-gate-ready" id="guestGateReady" hidden>
+        <p class="gate-script-title">Undangan</p>
+        <h3>KHITANAN</h3>
+        <div class="gate-gold-separator" aria-hidden="true"><span></span><i>◆</i><span></span></div>
+        <p class="gate-child-name">Muhammad Haziq<br /><em>Syauqi Ramadhan</em></p>
+        <div class="gate-recipient">
+          <span>Kepada Yth.</span>
+          <strong><span data-guest-name>Tamu Undangan</span></strong>
+        </div>
+        <button type="button" class="guest-gate-submit" id="guestOpenInvitation">Buka Undangan</button>
+        <button type="button" class="guest-edit-button" id="guestEdit">Ubah nama</button>
+      </div>
+    </div>
+  </div>
+
   <div class="music-player" id="musicPlayer" aria-label="Pemutar musik latar">
     <audio id="bgMusic" loop preload="auto" autoplay>
       <source src="/always with me flute - spirited away.mp3" type="audio/mpeg" />
@@ -65,6 +93,10 @@
 
           <div class="desktop-name-block">
             <h2>Muhammad Haziq<br /><em>Syauqi Ramadhan</em></h2>
+            <div class="hero-recipient">
+              <span>Kepada Yth.</span>
+              <strong><b data-guest-name>Tamu Undangan</b></strong>
+            </div>
             <button type="button" class="open-button" data-open-invitation id="btnBukaUndangan">
               <span class="play-icon" aria-hidden="true"></span>
               Buka Undangan
@@ -74,6 +106,10 @@
 
         <div class="mobile-name-block">
           <h2>Muhammad Haziq <em>Syauqi Ramadhan</em></h2>
+          <div class="hero-recipient">
+            <span>Kepada Yth.</span>
+            <strong><b data-guest-name>Tamu Undangan</b></strong>
+          </div>
           <button type="button" class="open-button" data-open-invitation id="btnBukaUndanganMobile">
             <span class="play-icon" aria-hidden="true"></span>
             Buka Undangan
@@ -84,6 +120,63 @@
       <img class="leaf hero-leaf-left decor" src="/daun.png" alt="" />
       <img class="leaf hero-leaf-right decor" src="/daun.png" alt="" />
       <div class="hero-cream-wave" aria-hidden="true"></div>
+    </section>
+
+    <section class="event-section ucapan-first" id="ucapan">
+      <div class="section-heading reveal">
+        <span></span><i>◆</i>
+        <h2>Ucapan &amp; Doa</h2><i>◆</i><span></span>
+      </div>
+      <div class="form-container reveal reveal-delay-1">
+        <form id="ucapanForm">
+          <div class="form-group">
+            <label class="form-label" for="ucapanName">Nama Anda</label>
+            <input type="text" id="ucapanName" class="form-input" placeholder="Masukkan nama Anda" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ucapanText">Ucapan &amp; Doa</label>
+            <textarea id="ucapanText" class="form-textarea" placeholder="Tulis ucapan dan doa untuk anak kami..."
+              required></textarea>
+          </div>
+          <button type="button" class="open-button rsvp-btn" id="submitUcapan">
+            <span class="send-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </span>
+            Kirim Ucapan
+          </button>
+        </form>
+        <div class="ucapan-history-title"><span></span>
+          <p>Riwayat Ucapan</p><span></span>
+        </div>
+        <div class="ucapan-list" id="ucapanList">
+          <div class="ucapan-item">
+            <div class="ucapan-header"><strong>Keluarga Besar Budi</strong><span class="ucapan-time">Baru saja</span>
+            </div>
+            <p>Selamat dikhitan, semoga menjadi anak yang sholeh, berbakti kepada orang tua, dan berguna bagi agama dan
+              bangsa.</p>
+          </div>
+          <div class="ucapan-item">
+            <div class="ucapan-header"><strong>Andi &amp; Keluarga</strong><span class="ucapan-time">2 jam lalu</span>
+            </div>
+            <p>Semoga lekas sembuh dan menjadi anak yang pintar dan sholeh. Aamiin ya Rabbal'alamin.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="opening-prayer legacy-prayer" id="doa">
+      <div class="prayer-card reveal">
+        <span class="prayer-kicker">Assalamu’alaikum Warahmatullahi Wabarakatuh</span>
+        <div class="prayer-mark" aria-hidden="true">﷽</div>
+        <h2>Doa &amp; Harapan Terbaik</h2>
+        <p>Ya Allah, jadikanlah putra kami anak yang saleh, sehat, berilmu, berakhlak mulia, serta senantiasa berada
+          dalam lindungan dan ridha-Mu.</p>
+        <div class="personal-greeting">
+          Dengan penuh rasa syukur, kami mengundang<br />
+          <strong>Bapak/Ibu <span data-guest-name>Tamu Undangan</span></strong><br />
+          untuk hadir dan memberikan doa terbaik.
+        </div>
+      </div>
     </section>
 
     <section class="profile-section" id="profile">
@@ -226,9 +319,8 @@
           </svg>
           Kp. Bugelan, Kawalu, Tasikmalaya
         </div>
-        <iframe
-          src="https://maps.google.com/maps?ll=-7.4009193,108.215572&z=16&t=m&output=embed"
-          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+        <iframe src="https://maps.google.com/maps?ll=-7.4009193,108.215572&z=16&t=m&output=embed" width="100%"
+          height="100%" style="border:0;" allowfullscreen="" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"></iframe>
         <div class="map-info-copy">
           <span class="map-pin" aria-hidden="true">
@@ -248,6 +340,43 @@
           Buka Google Maps <span aria-hidden="true">↗</span>
         </a>
       </div>
+    </section>
+
+    <section class="gallery-section" id="gallery">
+      <div class="section-heading reveal">
+        <span></span><i>◆</i>
+        <h2>Galeri Haziq</h2><i>◆</i><span></span>
+      </div>
+      <p class="gallery-intro reveal">Sepenggal cerita dan momen bahagia yang kelak menjadi kenangan.</p>
+      <div class="gallery-grid gallery-real reveal reveal-delay-1">
+        <figure class="gallery-photo gallery-featured"><img src="/haziq2.jpeg" alt="Momen Haziq" loading="lazy"><figcaption><span>01</span><strong>Momen Bahagia</strong></figcaption></figure>
+        <figure class="gallery-photo gallery-tall"><img src="/haziq3.jpeg" alt="Potret Haziq" loading="lazy"><figcaption><span>02</span><strong>Langkah Kecil</strong></figcaption></figure>
+        <figure class="gallery-photo"><img src="/haziq4.jpeg" alt="Kenangan Haziq" loading="lazy"><figcaption><span>03</span><strong>Cerita Haziq</strong></figcaption></figure>
+        <figure class="gallery-photo"><img src="/haziq5.jpeg" alt="Senyum Haziq" loading="lazy"><figcaption><span>04</span><strong>Senyum Terbaik</strong></figcaption></figure>
+        <figure class="gallery-photo gallery-wide gallery-focus-low"><img src="/haziq3.jpeg" alt="Hari bahagia Haziq" loading="lazy"><figcaption><span>05</span><strong>Hari yang Berarti</strong></figcaption></figure>
+        <figure class="gallery-photo gallery-focus-top"><img src="/haziq2.jpeg" alt="Potret ceria Haziq" loading="lazy"><figcaption><span>06</span><strong>Potret Ceria</strong></figcaption></figure>
+        <figure class="gallery-photo gallery-focus-low"><img src="/haziq5.jpeg" alt="Kenangan kecil Haziq" loading="lazy"><figcaption><span>07</span><strong>Kenangan Kecil</strong></figcaption></figure>
+        <figure class="gallery-photo gallery-wide gallery-focus-top"><img src="/haziq4.jpeg" alt="Cerita indah Haziq" loading="lazy"><figcaption><span>08</span><strong>Cerita yang Indah</strong></figcaption></figure>
+        <div class="gallery-collage-copy">
+          <strong>Beautiful Moments</strong>
+          <span>of Haziq</span>
+          <p>Setiap senyum, langkah kecil, dan cerita hari ini akan menjadi kenangan indah untuk selamanya.</p>
+        </div>
+      </div>
+      <div class="gallery-grid reveal reveal-delay-1">
+        <button class="gallery-slot gallery-featured" type="button" aria-label="Tempat foto utama">
+          <span class="gallery-icon">＋</span><strong>Foto Utama</strong><small>Tambahkan foto di sini</small>
+        </button>
+        <button class="gallery-slot" type="button" aria-label="Tempat foto kedua"><span
+            class="gallery-icon">＋</span><small>Foto 02</small></button>
+        <button class="gallery-slot" type="button" aria-label="Tempat foto ketiga"><span
+            class="gallery-icon">＋</span><small>Foto 03</small></button>
+        <button class="gallery-slot" type="button" aria-label="Tempat foto keempat"><span
+            class="gallery-icon">＋</span><small>Foto 04</small></button>
+        <button class="gallery-slot" type="button" aria-label="Tempat foto kelima"><span
+            class="gallery-icon">＋</span><small>Foto 05</small></button>
+      </div>
+      <p class="gallery-note">Area galeri sudah siap — foto dapat diganti langsung nanti.</p>
     </section>
 
     <section class="countdown-section" id="countdown">
@@ -281,7 +410,51 @@
       </div>
     </section>
 
-    <section class="event-section" id="rsvp">
+    <section class="history-section" id="history">
+      <img class="history-leaf history-leaf-left decor" src="/daun.png" alt="" aria-hidden="true" />
+      <img class="history-leaf history-leaf-right decor" src="/daun.png" alt="" aria-hidden="true" />
+      <div class="section-heading reveal">
+        <span></span><i>◆</i>
+        <h2>Riwayat Ucapan</h2><i>◆</i><span></span>
+      </div>
+      <p class="history-intro reveal">Doa dan ucapan hangat dari keluarga serta sahabat untuk Haziq.</p>
+      <div class="history-marquee reveal reveal-delay-1">
+        <div class="history-track" id="historyTrack">
+          <div class="history-group">
+            <article class="history-card">
+              <div><strong>Keluarga Besar Budi</strong><span>Baru saja</span></div>
+              <p>Selamat dikhitan, semoga menjadi anak yang sholeh, berbakti kepada orang tua, dan berguna bagi agama
+                dan bangsa.</p>
+            </article>
+            <article class="history-card">
+              <div><strong>Andi &amp; Keluarga</strong><span>2 jam lalu</span></div>
+              <p>Semoga lekas sembuh dan menjadi anak yang pintar dan sholeh. Aamiin ya Rabbal'alamin.</p>
+            </article>
+            <article class="history-card">
+              <div><strong>Keluarga Rahman</strong><span>Hari ini</span></div>
+              <p>Semoga Haziq selalu sehat, tumbuh menjadi anak yang saleh, dan senantiasa dalam lindungan Allah.</p>
+            </article>
+          </div>
+          <div class="history-group" aria-hidden="true">
+            <article class="history-card">
+              <div><strong>Keluarga Besar Budi</strong><span>Baru saja</span></div>
+              <p>Selamat dikhitan, semoga menjadi anak yang sholeh, berbakti kepada orang tua, dan berguna bagi agama
+                dan bangsa.</p>
+            </article>
+            <article class="history-card">
+              <div><strong>Andi &amp; Keluarga</strong><span>2 jam lalu</span></div>
+              <p>Semoga lekas sembuh dan menjadi anak yang pintar dan sholeh. Aamiin ya Rabbal'alamin.</p>
+            </article>
+            <article class="history-card">
+              <div><strong>Keluarga Rahman</strong><span>Hari ini</span></div>
+              <p>Semoga Haziq selalu sehat, tumbuh menjadi anak yang saleh, dan senantiasa dalam lindungan Allah.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="event-section legacy-rsvp" id="rsvp">
       <div class="section-heading reveal">
         <span></span><i>◆</i>
         <h2>RSVP Kehadiran</h2><i>◆</i><span></span>
@@ -308,7 +481,7 @@
       </div>
     </section>
 
-    <section class="event-section" id="ucapan" style="padding-top: 20px;">
+    <section class="event-section legacy-ucapan" id="ucapanLama" style="padding-top: 20px;">
       <div class="section-heading reveal">
         <span></span><i>◆</i>
         <h2>Ucapan &amp; Doa</h2><i>◆</i><span></span>
@@ -374,12 +547,57 @@
     </section>
   </main>
 
+  <button type="button" class="share-fab" id="shareButton" aria-label="Bagikan undangan">
+    <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg>
+    <span>Bagikan</span>
+  </button>
+
+  <aside class="chat-widget" id="chatWidget">
+    <button type="button" class="chat-fab" id="chatToggle" aria-label="Buka chat" aria-expanded="false">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 5h16v11H8l-4 4V5Z" />
+        <path d="M8 9h8M8 12h5" />
+      </svg>
+      <span>Chat</span>
+    </button>
+    <div class="chat-panel" id="chatPanel" hidden>
+      <div class="chat-head">
+        <div><strong>Ruang Ucapan</strong><span>Bagikan doa terbaik Anda</span></div>
+        <button type="button" id="chatClose" aria-label="Tutup chat">×</button>
+      </div>
+      <div class="chat-messages" id="chatMessages" aria-live="polite">
+        <div class="chat-bubble chat-welcome"><strong>Keluarga Haziq</strong>
+          <p>Terima kasih sudah hadir di hari bahagia kami 🤍</p>
+        </div>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input id="chatInput" type="text" maxlength="240" placeholder="Tulis ucapan atau doa..." aria-label="Pesan chat"
+          required />
+        <button type="submit" aria-label="Kirim pesan">➜</button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="quick-actions" id="quickActions">
+    <div class="quick-actions-menu" aria-label="Menu tindakan cepat">
+      <button type="button" class="quick-action" id="quickMusic" aria-label="Putar atau jeda musik" data-label="Musik">
+        <svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+      </button>
+      <button type="button" class="quick-action" id="quickShare" aria-label="Bagikan undangan" data-label="Share">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg>
+      </button>
+    </div>
+    <button type="button" class="quick-actions-toggle" id="quickActionsToggle" aria-label="Buka menu tindakan" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
   <nav class="mobile-bottom-nav" aria-label="Navigasi undangan">
     <button type="button" class="nav-open-invitation" data-open-invitation aria-label="Buka undangan sekarang">
       <span class="nav-open-icon" aria-hidden="true"></span>
       <span>Buka Sekarang</span>
     </button>
-    <a href="#profile" id="navHome">
+    <a href="#ucapan" id="navHome">
       <svg viewBox="0 0 24 24">
         <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z" />
         <path d="M9 21V12h6v9" />
@@ -393,14 +611,15 @@
       </svg>
       <span>Lokasi</span>
     </a>
-    <a href="#rsvp" id="navRsvp">
+    <a href="#gallery" id="navGallery">
       <svg viewBox="0 0 24 24">
-        <path d="M4 5h16v11H8l-4 4V5Z" />
-        <path d="M8 9h8M8 12h5" />
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="9" cy="10" r="2" />
+        <path d="m4 17 5-4 3 2 3-3 5 5" />
       </svg>
-      <span>RSVP</span>
+      <span>Galeri</span>
     </a>
-    <a href="#ucapan" id="navUcapan">
+    <a href="#history" id="navUcapan">
       <svg viewBox="0 0 24 24">
         <path d="M12 20s-7-4.2-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.8-7 10-7 10Z" />
       </svg>

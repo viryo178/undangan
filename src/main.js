@@ -75,15 +75,69 @@ const resumeMusicOnFirstInteraction = async (event) => {
 document.addEventListener("pointerdown", resumeMusicOnFirstInteraction);
 document.addEventListener("keydown", resumeMusicOnFirstInteraction);
 
-const invitationSection = document.getElementById("profile");
+const invitationSection = document.getElementById("ucapan");
+const guestGate = document.getElementById("guestGate");
+const guestGateForm = document.getElementById("guestGateForm");
+const guestGateReady = document.getElementById("guestGateReady");
+const guestNameInput = document.getElementById("guestName");
+const guestGateError = document.getElementById("guestGateError");
+let guestName = "";
+
+function applyGuestName(name) {
+  guestName = name.trim();
+  const adaptiveSize = Math.max(13, Math.min(25, 28 - guestName.length * 0.3));
+  document.querySelectorAll("[data-guest-name]").forEach((element) => {
+    element.textContent = guestName || "Tamu Undangan";
+    element.style.fontSize = `${adaptiveSize}px`;
+    element.title = guestName;
+  });
+  const rsvpName = document.getElementById("rsvpName");
+  const ucapanName = document.getElementById("ucapanName");
+  if (rsvpName) rsvpName.value = guestName;
+  if (ucapanName) ucapanName.value = guestName;
+}
+
+function openInvitation() {
+  if (!guestName) {
+    guestNameInput?.focus();
+    return;
+  }
+  triggerAutoplay();
+  guestGate?.classList.add("is-closing");
+  document.body.classList.remove("invitation-locked");
+  document.body.classList.add("invitation-opened");
+  setTimeout(() => { if (guestGate) guestGate.hidden = true; }, 480);
+  requestAnimationFrame(() => invitationSection?.scrollIntoView({ behavior: "smooth", block: "start" }));
+}
+
+guestGateForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = guestNameInput?.value.trim() || "";
+  if (name.length < 2) {
+    guestGateError.textContent = "Mohon masukkan nama terlebih dahulu.";
+    return;
+  }
+  guestGateError.textContent = "";
+  applyGuestName(name);
+  localStorage.setItem("haziqGuest", JSON.stringify({ name }));
+  guestGate?.classList.add("is-closing");
+  setTimeout(() => document.body.classList.add("cover-personalized"), 180);
+  setTimeout(() => { if (guestGate) guestGate.hidden = true; }, 480);
+  document.getElementById("home")?.scrollIntoView({ block: "start" });
+});
+
+document.getElementById("guestEdit")?.addEventListener("click", () => {
+  guestGateReady.hidden = true;
+  guestGateForm.hidden = false;
+  guestGate?.classList.remove("guest-ready");
+  guestNameInput?.focus();
+});
+document.getElementById("guestOpenInvitation")?.addEventListener("click", openInvitation);
+
 document.querySelectorAll("[data-open-invitation]").forEach((button) => {
   button.addEventListener("click", () => {
-    triggerAutoplay();
-    document.body.classList.remove("invitation-locked");
-    document.body.classList.add("invitation-opened");
-    requestAnimationFrame(() => {
-      invitationSection?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    if (guestName) openInvitation();
+    else guestNameInput?.focus();
   });
 });
 const eventDate = new Date(2026, 8, 5, 7, 0, 0);
@@ -144,7 +198,7 @@ const revealObserver = new IntersectionObserver(
 
 revealElements.forEach((el) => revealObserver.observe(el));
 
-const sections = document.querySelectorAll("section[id]");
+const sections = document.querySelectorAll("section[id]:not(.legacy-prayer):not(.legacy-ucapan):not(.legacy-rsvp)");
 const navLinks = document.querySelectorAll(".mobile-bottom-nav a");
 
 window.addEventListener("scroll", () => {
@@ -200,21 +254,124 @@ if (submitUcapan) {
       return;
     }
 
-    const list = document.getElementById("ucapanList");
-    if (list) {
-      const item = document.createElement("div");
-      item.className = "ucapan-item";
-      item.style.animation = "fade-up 0.5s ease forwards";
-      item.innerHTML = `
-        <div class="ucapan-header">
-          <strong>${name}</strong>
-          <span class="ucapan-time">Baru saja</span>
-        </div>
-        <p>${pesan}</p>
-      `;
-      list.prepend(item);
-    }
+    const groups = document.querySelectorAll("#historyTrack .history-group");
+    groups.forEach((group) => {
+      const card = document.createElement("article");
+      card.className = "history-card";
+      const header = document.createElement("div");
+      const author = document.createElement("strong");
+      const time = document.createElement("span");
+      const message = document.createElement("p");
+      author.textContent = name;
+      time.textContent = "Baru saja";
+      message.textContent = pesan;
+      header.append(author, time);
+      card.append(header, message);
+      group.prepend(card);
+    });
 
-    document.getElementById("ucapanForm")?.reset();
+    const ucapanText = document.getElementById("ucapanText");
+    if (ucapanText) ucapanText.value = "";
   });
 }
+
+// Floating guest chat. Messages are stored locally so the feature works without a server.
+const chatToggle = document.getElementById("chatToggle");
+const chatPanel = document.getElementById("chatPanel");
+const chatClose = document.getElementById("chatClose");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+function setChatOpen(open) {
+  if (chatPanel) chatPanel.hidden = !open;
+  chatToggle?.setAttribute("aria-expanded", String(open));
+  if (open) setTimeout(() => chatInput?.focus(), 50);
+}
+
+function addChatMessage(message, persist = true) {
+  if (!chatMessages) return;
+  const bubble = document.createElement("div");
+  bubble.className = "chat-bubble mine";
+  const author = document.createElement("strong");
+  author.textContent = guestName || "Tamu";
+  const text = document.createElement("p");
+  text.textContent = message;
+  bubble.append(author, text);
+  chatMessages.appendChild(bubble);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  if (persist) {
+    const messages = JSON.parse(localStorage.getItem("haziqChat") || "[]");
+    messages.push({ name: guestName || "Tamu", message });
+    localStorage.setItem("haziqChat", JSON.stringify(messages.slice(-20)));
+  }
+}
+
+try {
+  JSON.parse(localStorage.getItem("haziqChat") || "[]").forEach((item) => {
+    const previousName = guestName;
+    guestName = item.name;
+    addChatMessage(item.message, false);
+    guestName = previousName;
+  });
+} catch { localStorage.removeItem("haziqChat"); }
+
+chatToggle?.addEventListener("click", () => setChatOpen(chatPanel?.hidden ?? true));
+chatClose?.addEventListener("click", () => setChatOpen(false));
+chatForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const message = chatInput?.value.trim();
+  if (!message) return;
+  addChatMessage(message);
+  chatForm.reset();
+});
+
+const shareButton = document.getElementById("shareButton");
+
+function showShareToast(message) {
+  document.querySelector(".share-toast")?.remove();
+  const toast = document.createElement("div");
+  toast.className = "share-toast";
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add("show"));
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 300);
+  }, 2200);
+}
+
+shareButton?.addEventListener("click", async () => {
+  const shareData = {
+    title: "Undangan Khitanan Muhammad Haziq",
+    text: `Kepada Yth. ${guestName || "Bapak/Ibu/Saudara/i"}, kami mengundang Anda ke acara khitanan Muhammad Haziq Syauqi Ramadhan.`,
+    url: window.location.href,
+  };
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(window.location.href);
+      showShareToast("Tautan undangan berhasil disalin");
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") showShareToast("Belum dapat membagikan undangan");
+  }
+});
+
+const quickActions = document.getElementById("quickActions");
+const quickActionsToggle = document.getElementById("quickActionsToggle");
+
+function closeQuickActions() {
+  quickActions?.classList.remove("open");
+  quickActionsToggle?.setAttribute("aria-expanded", "false");
+}
+
+quickActionsToggle?.addEventListener("click", () => {
+  const open = !quickActions?.classList.contains("open");
+  quickActions?.classList.toggle("open", open);
+  quickActionsToggle.setAttribute("aria-expanded", String(open));
+});
+document.getElementById("quickMusic")?.addEventListener("click", () => { musicToggle?.click(); closeQuickActions(); });
+document.getElementById("quickChat")?.addEventListener("click", () => { chatToggle?.click(); closeQuickActions(); });
+document.getElementById("quickShare")?.addEventListener("click", () => { shareButton?.click(); closeQuickActions(); });
