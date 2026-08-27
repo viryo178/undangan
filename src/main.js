@@ -162,12 +162,13 @@ document.querySelectorAll("[data-open-invitation]").forEach((button) => {
 
 const urlGuestName = getGuestNameFromUrl();
 if (urlGuestName.length >= 2) {
+  document.body.classList.add("url-personalized");
   applyGuestName(urlGuestName);
   if (guestNameInput) guestNameInput.value = urlGuestName;
   if (guestGateForm) guestGateForm.hidden = true;
   if (guestGateReady) guestGateReady.hidden = false;
-  const guestEditButton = document.getElementById("guestEdit");
-  if (guestEditButton) guestEditButton.hidden = true;
+  if (guestGate) guestGate.hidden = false;
+  guestGate?.classList.remove("is-closing");
   guestGate?.classList.add("guest-ready");
 }
 const eventDate = new Date(2026, 8, 5, 7, 0, 0);

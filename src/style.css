@@ -4480,3 +4480,23 @@ body.cover-personalized .hero-recipient [data-guest-name] {
   }
   body.invitation-locked .hero-inner::after { display: none; }
 }
+
+/* Personalized links always start on the clean reference cover. */
+body.url-personalized .guest-gate:not(.is-closing):not([hidden]) { display: grid; visibility: visible; opacity: 1; }
+body.url-personalized .guest-gate.guest-ready .guest-gate-backdrop {
+  background: linear-gradient(90deg, rgba(35,18,8,.58), rgba(73,40,18,.48), rgba(35,18,8,.58)), url('/background2.jpeg') center/cover;
+}
+body.url-personalized .guest-gate.guest-ready .guest-gate-card::before {
+  width: min(450px, 72vh, calc(100vw - 70px));
+  height: min(450px, 72vh, calc(100vw - 70px));
+  border-color: rgba(216,155,56,.64);
+}
+body.url-personalized .guest-gate.guest-ready .guest-gate-card::after { display: none; }
+body.url-personalized .guest-edit-button { display: none !important; }
+
+@media (max-width: 767px) {
+  body.url-personalized .guest-gate.guest-ready .guest-gate-card::before {
+    width: min(430px, calc(100vw - 34px), 68vh);
+    height: min(430px, calc(100vw - 34px), 68vh);
+  }
+}
