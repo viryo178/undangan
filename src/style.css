@@ -4484,7 +4484,7 @@ body.cover-personalized .hero-recipient [data-guest-name] {
 /* Personalized links always start on the clean reference cover. */
 body.url-personalized .guest-gate:not(.is-closing):not([hidden]) { display: grid; visibility: visible; opacity: 1; }
 body.url-personalized .guest-gate.guest-ready .guest-gate-backdrop {
-  background: linear-gradient(90deg, rgba(35,18,8,.58), rgba(73,40,18,.48), rgba(35,18,8,.58)), url('/background2.jpeg') center/cover;
+  background: linear-gradient(90deg, rgba(30,14,5,.34), rgba(68,36,15,.22), rgba(29,13,5,.36)), url('/background2.jpeg') center/cover;
 }
 body.url-personalized .guest-gate.guest-ready .guest-gate-card::before {
   width: min(450px, 72vh, calc(100vw - 70px));
@@ -4502,9 +4502,9 @@ body.url-personalized .guest-edit-button { display: none !important; }
 }
 
 /* Keep the main hero identical to the requested reference in every cover state. */
-.hero-room-bg { filter: brightness(.68) saturate(.86) !important; opacity: 1 !important; }
+.hero-room-bg { filter: brightness(.88) saturate(.9) !important; opacity: 1 !important; }
 .hero-overlay {
-  background: radial-gradient(circle at 50% 45%, rgba(159,94,36,.16), transparent 33%), linear-gradient(90deg, rgba(30,14,5,.55), rgba(61,32,13,.38), rgba(28,13,5,.58)) !important;
+  background: radial-gradient(circle at 50% 45%, rgba(151,88,31,.09), transparent 35%), linear-gradient(90deg, rgba(25,11,4,.34), rgba(56,28,11,.22), rgba(24,10,4,.37)) !important;
 }
 @media (min-width: 768px) {
   .hero-inner::before {
