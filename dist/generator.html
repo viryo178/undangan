@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generator Tautan Undangan</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 20px; color: #fff8ec; background: radial-gradient(circle at top, #6d421b, #211207 55%, #100904); }
+    main { width: min(560px, 100%); padding: 32px; border: 1px solid #d7a24d66; border-radius: 24px; background: #261508e8; box-shadow: 0 24px 70px #0008; }
+    h1 { margin: 0 0 8px; font: 600 32px Georgia, serif; }
+    p { margin: 0 0 24px; color: #d8c9b5; line-height: 1.6; }
+    label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+    input { width: 100%; height: 50px; padding: 0 14px; color: #fff; border: 1px solid #d7a24d77; border-radius: 12px; outline: none; background: #fff1; font-size: 15px; }
+    input:focus { border-color: #efc574; box-shadow: 0 0 0 3px #d7a24d22; }
+    button, a.action { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 0 18px; border: 0; border-radius: 12px; color: #291708; background: linear-gradient(135deg, #f1d08a, #d89c3e); font-weight: 800; text-decoration: none; cursor: pointer; }
+    form button { width: 100%; margin-top: 14px; }
+    .result { margin-top: 24px; padding-top: 22px; border-top: 1px solid #ffffff1c; }
+    .result[hidden] { display: none; }
+    .result input { font-size: 13px; }
+    .actions { display: flex; gap: 10px; margin-top: 12px; }
+    .actions > * { flex: 1; }
+    #copyStatus { min-height: 20px; margin: 10px 0 0; color: #efc574; font-size: 12px; }
+    @media (max-width: 480px) { main { padding: 25px 20px; } .actions { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Generator Undangan</h1>
+    <p>Masukkan nama penerima. Tautan dibuat langsung di perangkat ini dan tidak disimpan.</p>
+    <form id="generatorForm" autocomplete="off">
+      <label for="guestName">Nama penerima undangan</label>
+      <input id="guestName" placeholder="Contoh: Drs. H. Aceng Mubarok" required minlength="2" autofocus>
+      <button type="submit">Buat Tautan</button>
+    </form>
+
+    <section class="result" id="result" aria-live="polite" hidden>
+      <label for="generatedUrl">Tautan siap dibagikan</label>
+      <input id="generatedUrl" readonly>
+      <div class="actions">
+        <button type="button" id="shareButton">Bagikan Undangan</button>
+        <button type="button" id="copyButton">Salin Tautan</button>
+        <a class="action" id="openInvitation" target="_blank" rel="noopener">Buka Undangan</a>
+      </div>
+      <p id="copyStatus"></p>
+    </section>
+  </main>
+  <script>
+    const baseUrl = 'https://viryo178.github.io/undangan/';
+    const form = document.getElementById('generatorForm');
+    const guestName = document.getElementById('guestName');
+    const result = document.getElementById('result');
+    const generatedUrl = document.getElementById('generatedUrl');
+    const openInvitation = document.getElementById('openInvitation');
+    const copyStatus = document.getElementById('copyStatus');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = guestName.value.trim();
+      if (name.length < 2) return;
+
+      const url = baseUrl + encodeURIComponent(name);
+      generatedUrl.value = url;
+      openInvitation.href = url;
+      result.hidden = false;
+      copyStatus.textContent = '';
+    });
+
+    document.getElementById('copyButton').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(generatedUrl.value);
+      } catch {
+        generatedUrl.select();
+        document.execCommand('copy');
+      }
+      copyStatus.textContent = 'Tautan berhasil disalin.';
+    });
+
+    document.getElementById('shareButton').addEventListener('click', async () => {
+      const name = guestName.value.trim();
+      const shareData = {
+        title: 'Undangan Khitanan Muhammad Haziq',
+        text: `Kepada Yth. ${name}, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara khitanan Muhammad Haziq Syauqi Ramadhan.`,
+        url: generatedUrl.value,
+      };
+
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+          copyStatus.textContent = 'Undangan siap dibagikan.';
+        } else {
+          await navigator.clipboard.writeText(`${shareData.text}\n\n${shareData.url}`);
+          copyStatus.textContent = 'Pesan undangan disalin. Silakan tempel di WhatsApp atau aplikasi lainnya.';
+        }
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          generatedUrl.select();
+          document.execCommand('copy');
+          copyStatus.textContent = 'Tautan disalin. Silakan tempel di aplikasi yang diinginkan.';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

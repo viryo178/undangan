@@ -83,6 +83,25 @@ const guestNameInput = document.getElementById("guestName");
 const guestGateError = document.getElementById("guestGateError");
 let guestName = "";
 
+function getGuestNameFromUrl() {
+  const queryName = new URLSearchParams(window.location.search).get("to");
+  if (queryName?.trim()) return queryName.trim();
+
+  const basePath = "/undangan/";
+  const path = window.location.pathname;
+  const encodedName = path.startsWith(basePath)
+    ? path.slice(basePath.length)
+    : path.replace(/^\/+/, "");
+
+  if (!encodedName || encodedName === "index.html" || encodedName === "generator.php") return "";
+
+  try {
+    return decodeURIComponent(encodedName.replace(/\/+$/, "")).trim();
+  } catch {
+    return "";
+  }
+}
+
 function applyGuestName(name) {
   guestName = name.trim();
   const adaptiveSize = Math.max(13, Math.min(25, 28 - guestName.length * 0.3));
@@ -140,6 +159,17 @@ document.querySelectorAll("[data-open-invitation]").forEach((button) => {
     else guestNameInput?.focus();
   });
 });
+
+const urlGuestName = getGuestNameFromUrl();
+if (urlGuestName.length >= 2) {
+  applyGuestName(urlGuestName);
+  if (guestNameInput) guestNameInput.value = urlGuestName;
+  if (guestGateForm) guestGateForm.hidden = true;
+  if (guestGateReady) guestGateReady.hidden = false;
+  const guestEditButton = document.getElementById("guestEdit");
+  if (guestEditButton) guestEditButton.hidden = true;
+  guestGate?.classList.add("guest-ready");
+}
 const eventDate = new Date(2026, 8, 5, 7, 0, 0);
 const elements = {
   days:    document.getElementById("days"),
