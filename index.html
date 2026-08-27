@@ -14,6 +14,21 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
+  <style id="critical-cover-style">
+    @media (min-width:768px) {
+      .hero-inner::before { top:50% !important; width:min(450px,72vh) !important; border-color:rgba(216,155,56,.62) !important; }
+      .hero-inner::after { display:none !important; }
+      .hero-copy { width:min(410px,92%) !important; }
+      .script-title { font-size:clamp(42px,5vw,52px) !important; }
+      .hero-copy h1 { margin-top:2px !important; font-size:clamp(50px,5.2vw,62px) !important; letter-spacing:.075em !important; }
+      .gold-separator { width:290px !important; margin-top:16px !important; }
+      .desktop-name-block h2 { max-width:400px !important; margin:18px auto 0 !important; font-size:clamp(38px,4vw,44px) !important; line-height:1.02 !important; }
+      .desktop-name-block h2 em { display:block !important; }
+      .desktop-name-block .hero-recipient { width:270px !important; min-width:0 !important; margin:19px auto 15px !important; padding:10px 18px !important; border:0 !important; border-top:1px solid rgba(226,172,81,.42) !important; border-bottom:1px solid rgba(226,172,81,.42) !important; border-radius:0 !important; background:transparent !important; backdrop-filter:none !important; }
+      .desktop-name-block .open-button { min-width:210px !important; height:50px !important; margin-top:3px !important; padding:0 28px !important; }
+    }
+    body.invitation-locked .music-player, body.invitation-locked .share-fab { display:none !important; }
+  </style>
 </head>
 
 <body class="invitation-locked">
@@ -97,7 +112,6 @@
               <strong><b data-guest-name>Tamu Undangan</b></strong>
             </div>
             <button type="button" class="open-button" data-open-invitation id="btnBukaUndangan">
-              <span class="play-icon" aria-hidden="true"></span>
               Buka Undangan
             </button>
           </div>
@@ -110,14 +124,11 @@
             <strong><b data-guest-name>Tamu Undangan</b></strong>
           </div>
           <button type="button" class="open-button" data-open-invitation id="btnBukaUndanganMobile">
-            <span class="play-icon" aria-hidden="true"></span>
             Buka Undangan
           </button>
         </div>
       </div>
 
-      <img class="leaf hero-leaf-left decor" src="/daun.png" alt="" />
-      <img class="leaf hero-leaf-right decor" src="/daun.png" alt="" />
       <div class="hero-cream-wave" aria-hidden="true"></div>
     </section>
 
