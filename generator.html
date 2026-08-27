@@ -5,37 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Generator Tautan Undangan</title>
   <style>
-    :root { color-scheme: dark; font-family: Inter, Arial, sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+    :root { color-scheme: dark; font-family: Inter, Arial, sans-serif; --gold: #dca84f; --gold-light: #f3d797; --brown: #251408; }
     * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 20px; color: #fff8ec; background: radial-gradient(circle at top, #6d421b, #211207 55%, #100904); }
-    main { width: min(560px, 100%); padding: 32px; border: 1px solid #d7a24d66; border-radius: 24px; background: #261508e8; box-shadow: 0 24px 70px #0008; }
-    h1 { margin: 0 0 8px; font: 600 32px Georgia, serif; }
-    p { margin: 0 0 24px; color: #d8c9b5; line-height: 1.6; }
-    label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
-    input { width: 100%; height: 50px; padding: 0 14px; color: #fff; border: 1px solid #d7a24d77; border-radius: 12px; outline: none; background: #fff1; font-size: 15px; }
-    input:focus { border-color: #efc574; box-shadow: 0 0 0 3px #d7a24d22; }
-    button, a.action { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 0 18px; border: 0; border-radius: 12px; color: #291708; background: linear-gradient(135deg, #f1d08a, #d89c3e); font-weight: 800; text-decoration: none; cursor: pointer; }
-    form button { width: 100%; margin-top: 14px; }
-    .result { margin-top: 24px; padding-top: 22px; border-top: 1px solid #ffffff1c; }
+    body { min-height: 100svh; margin: 0; display: grid; place-items: center; padding: 30px 18px; color: #fff9ee; background: #160b04; overflow-x: hidden; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -2; background: linear-gradient(135deg, #140a03ee, #3d210dbd, #120903f2), url('/undangan/background2.jpeg') center/cover; }
+    body::after { content: ""; position: fixed; inset: 0; z-index: -1; opacity: .55; background: radial-gradient(circle at 50% 10%, #dba84e40, transparent 35%), radial-gradient(circle at 10% 90%, #9a622b22, transparent 30%); }
+    .page { width: min(650px, 100%); }
+    .brand { margin-bottom: 18px; text-align: center; }
+    .monogram { width: 58px; height: 58px; margin: 0 auto 12px; display: grid; place-items: center; border: 1px solid #efc7778a; border-radius: 50%; color: var(--gold-light); font: 600 26px "Cormorant Garamond", Georgia, serif; box-shadow: 0 0 0 7px #dca84f0a; }
+    .eyebrow { margin: 0; color: #e5bf73; font-size: 9px; font-weight: 700; letter-spacing: .27em; text-transform: uppercase; }
+    main { position: relative; padding: 40px; border: 1px solid #e4b75d4d; border-radius: 30px; background: linear-gradient(145deg, #2d190be8, #1c0e06f2); box-shadow: 0 30px 90px #000a; backdrop-filter: blur(18px); overflow: hidden; }
+    main::before { content: ""; position: absolute; inset: 9px; border: 1px solid #ffffff0d; border-radius: 22px; pointer-events: none; }
+    main::after { content: "✦"; position: absolute; top: 19px; right: 25px; color: #dca84f3d; font-size: 38px; }
+    .heading { position: relative; text-align: center; }
+    h1 { margin: 0; font: 600 clamp(36px, 7vw, 48px)/1 "Cormorant Garamond", Georgia, serif; letter-spacing: -.02em; }
+    .intro { max-width: 430px; margin: 12px auto 30px; color: #cdbda8; font-size: 12px; line-height: 1.75; }
+    .privacy { display: inline-flex; align-items: center; gap: 7px; margin-top: 9px; color: #9d8c76; font-size: 9px; }
+    .privacy::before { content: "✓"; width: 16px; height: 16px; display: grid; place-items: center; border-radius: 50%; color: #251408; background: var(--gold); font-weight: 800; }
+    form { position: relative; padding: 22px; border: 1px solid #efc77721; border-radius: 20px; background: #ffffff08; }
+    label { display: block; margin-bottom: 9px; color: #ead8bd; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .input-wrap { position: relative; }
+    .input-wrap::before { content: "♙"; position: absolute; left: 16px; top: 50%; color: #d7aa5d; font-size: 20px; transform: translateY(-50%); }
+    input { width: 100%; height: 56px; padding: 0 16px; color: #fffaf1; border: 1px solid #d7a24d55; border-radius: 14px; outline: none; background: #130a056b; font: 500 14px Inter, sans-serif; transition: .25s ease; }
+    .input-wrap input { padding-left: 47px; }
+    input:focus { border-color: #efc574; box-shadow: 0 0 0 4px #d7a24d17; background: #1b0f08; }
+    input::placeholder { color: #8f7e69; }
+    button, a.action { min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 18px; border: 0; border-radius: 14px; color: #291708; background: linear-gradient(135deg, #f3d58e, #d89c3e); box-shadow: 0 10px 24px #d89c3e24; font: 700 11px Inter, sans-serif; letter-spacing: .02em; text-decoration: none; cursor: pointer; transition: transform .2s ease, filter .2s ease, box-shadow .2s ease; }
+    button:hover, a.action:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 14px 30px #d89c3e35; }
+    form button { width: 100%; margin-top: 13px; }
+    form button::after { content: "→"; font-size: 18px; font-weight: 400; }
+    .result { position: relative; margin-top: 22px; padding: 23px; border: 1px solid #e1b45b38; border-radius: 20px; background: linear-gradient(135deg, #dca84f12, #ffffff08); animation: reveal .45s ease both; }
     .result[hidden] { display: none; }
-    .result input { font-size: 13px; }
-    .actions { display: flex; gap: 10px; margin-top: 12px; }
-    .actions > * { flex: 1; }
-    #copyStatus { min-height: 20px; margin: 10px 0 0; color: #efc574; font-size: 12px; }
-    @media (max-width: 480px) { main { padding: 25px 20px; } .actions { flex-direction: column; } }
+    .result-title { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: #f2d38d; font: 600 19px "Cormorant Garamond", Georgia, serif; }
+    .result-title span { width: 27px; height: 27px; display: grid; place-items: center; border-radius: 50%; color: #251408; background: var(--gold-light); font: 800 13px Inter, sans-serif; }
+    .result label { color: #bbaa94; font-size: 8px; }
+    .result input { height: 48px; padding: 0 13px; color: #ecd4aa; font-size: 11px; background: #1008048f; }
+    .actions { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 9px; margin-top: 12px; }
+    .actions > * { min-width: 0; padding: 0 10px; }
+    #copyButton, #openInvitation { color: #ead6b2; border: 1px solid #d7a24d45; background: #ffffff09; box-shadow: none; }
+    #copyStatus { min-height: 16px; margin: 11px 0 0; color: #efc574; text-align: center; font-size: 10px; }
+    .footer { margin: 16px 0 0; color: #8d7b66; text-align: center; font-size: 9px; letter-spacing: .04em; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(12px); } }
+    @media (max-width: 560px) {
+      body { padding: 18px 12px; }
+      .brand { margin-bottom: 12px; }
+      .monogram { width: 50px; height: 50px; margin-bottom: 9px; }
+      main { padding: 30px 18px 25px; border-radius: 24px; }
+      .intro { margin-bottom: 22px; }
+      form, .result { padding: 17px; border-radius: 17px; }
+      .actions { grid-template-columns: 1fr 1fr; }
+      #shareButton { grid-column: 1 / -1; }
+    }
   </style>
 </head>
 <body>
+  <div class="page">
+    <header class="brand">
+      <div class="monogram">HS</div>
+      <p class="eyebrow">Undangan Khitanan</p>
+    </header>
   <main>
-    <h1>Generator Undangan</h1>
-    <p>Masukkan nama penerima. Tautan dibuat langsung di perangkat ini dan tidak disimpan.</p>
+    <div class="heading">
+      <h1>Generator Undangan</h1>
+      <p class="intro">Buat tautan undangan personal untuk keluarga dan sahabat tercinta.<br><span class="privacy">Nama penerima tidak disimpan</span></p>
+    </div>
     <form id="generatorForm" autocomplete="off">
       <label for="guestName">Nama penerima undangan</label>
-      <input id="guestName" placeholder="Contoh: Drs. H. Aceng Mubarok" required minlength="2" autofocus>
-      <button type="submit">Buat Tautan</button>
+      <div class="input-wrap"><input id="guestName" placeholder="Contoh: Drs. H. Aceng Mubarok" required minlength="2" autofocus></div>
+      <button type="submit">Buat Tautan Undangan</button>
     </form>
 
     <section class="result" id="result" aria-live="polite" hidden>
+      <div class="result-title"><span>✓</span> Undangan siap dibagikan</div>
       <label for="generatedUrl">Tautan siap dibagikan</label>
       <input id="generatedUrl" readonly>
       <div class="actions">
@@ -46,6 +88,8 @@
       <p id="copyStatus"></p>
     </section>
   </main>
+    <p class="footer">Muhammad Haziq Syauqi Ramadhan · 2026</p>
+  </div>
   <script>
     const baseUrl = 'https://viryo178.github.io/undangan/';
     const form = document.getElementById('generatorForm');
